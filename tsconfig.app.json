@@ -20,7 +20,8 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Composite */
-    "composite": true
+    "composite": true,
+    "noEmit": false
   },
   "include": ["src"]
 }

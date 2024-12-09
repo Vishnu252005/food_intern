@@ -19,7 +19,8 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Composite */
-    "composite": true
+    "composite": true,
+    "noEmit": false
   },
   "include": ["vite.config.ts"]
 }

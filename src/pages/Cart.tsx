@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useCart } from '../context/CartContext';
 
@@ -16,9 +15,9 @@ export const Cart = () => {
             {state.items.map((item) => (
               <li key={item.menuItem.id} className="flex justify-between items-center mb-4">
                 <div>
-                  <h3 className="text-lg font-bold">{item.menuItem.name}</h3>
+                  <h3 className="text-lg font-bold">{item.menuItem.title}</h3>
                   <p className="text-gray-600">{item.menuItem.description}</p>
-                  <p className="text-gray-900">${item.menuItem.price.toFixed(2)}</p>
+                  <p className="text-gray-900">₹{item.menuItem.price.toFixed(2)}</p> {/* Display price in INR */}
                 </div>
                 <div className="flex items-center space-x-4">
                   <input
@@ -38,7 +37,7 @@ export const Cart = () => {
             ))}
           </ul>
           <div className="mt-8">
-            <h2 className="text-2xl font-bold">Total: ${state.total.toFixed(2)}</h2>
+            <h2 className="text-2xl font-bold">Total: ₹{state.total.toFixed(2)}</h2> {/* Display total in INR */}
             <button
               onClick={clearCart}
               className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"

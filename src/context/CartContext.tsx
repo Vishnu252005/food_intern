@@ -45,12 +45,16 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     }
 
     case 'REMOVE_ITEM': {
-      const newItems = state.items.filter(
-        (item) => item.menuItem.id !== action.payload
-      );
+      const updatedItems = state.items
+        .map((item) =>
+          item.menuItem.id === action.payload
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0);
       return {
-        items: newItems,
-        total: calculateTotal(newItems),
+        items: updatedItems,
+        total: calculateTotal(updatedItems),
       };
     }
 
@@ -96,12 +100,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const addItem = (item: MenuItem) => {
     dispatch({ type: 'ADD_ITEM', payload: item });
-    toast.success(`Added ${item.name} to cart`);
+    toast.success(`Added ${item.title} to cart`, { duration: 1000 }); // Set duration to 1 second
   };
 
   const removeItem = (id: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id });
-    toast.success('Item removed from cart');
+    toast.success('Item removed from cart', { duration: 1000 }); // Set duration to 1 second
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -110,7 +114,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' });
-    toast.success('Cart cleared');
+    toast.success('Cart cleared', { duration: 1000 }); // Set duration to 1 second
   };
 
   return (

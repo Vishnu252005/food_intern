@@ -1,6 +1,6 @@
 export interface MenuItem {
   id: string;
-  name: string;
+  title: string; // Changed from 'name' to 'title' for consistency
   description: string;
   price: number;
   image: string;
@@ -17,7 +17,6 @@ export interface MenuItem {
   rating: number;
   reviews: Review[];
 }
-
 
 export interface Review {
   id: string;

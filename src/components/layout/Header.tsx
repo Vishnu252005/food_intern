@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Search, ShoppingCart, User } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
-export const Header = () => {
+export const Header: React.FC<{ className?: string }> = ({ className }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { state } = useCart();
@@ -11,29 +11,20 @@ export const Header = () => {
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className={`${className} bg-white shadow`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-gray-900">FoodieHub</span>
+        <div className="flex justify-between items-center py-6">
+          <Link to="/" className="text-xl font-bold">
+            Logo
           </Link>
-          
           <nav className="hidden md:flex space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-gray-900">
-              Home
-            </Link>
-            <Link to="/categories" className="text-gray-700 hover:text-gray-900">
-              Categories
-            </Link>
-            <Link to="/offers" className="text-gray-700 hover:text-gray-900">
-              Offers
-            </Link>
-            <Link to="/about" className="text-gray-700 hover:text-gray-900">
-              About Us
-            </Link>
+            <Link to="/" className="text-gray-700 hover:text-gray-900">Home</Link>
+            <Link to="/categories" className="text-gray-700 hover:text-gray-900">Categories</Link>
+            <Link to="/cart" className="text-gray-700 hover:text-gray-900">Cart</Link>
+            <Link to="/about" className="text-gray-700 hover:text-gray-900">About</Link>
+            <Link to="/menu" className="text-gray-700 hover:text-gray-900">Menu</Link>
           </nav>
-
-          <div className="flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             <input
               type="text"
               placeholder="Search..."
@@ -76,9 +67,11 @@ export const Header = () => {
                 </div>
               )}
             </div>
-            <button className="md:hidden text-gray-700 hover:text-gray-900">
-              <Menu size={20} />
-            </button>
+            <div className="flex items-center space-x-4">
+              <a href="tel:+1234567890" className="bg-orange-500 text-white px-3 py-1 rounded-md hover:bg-orange-600">
+                Call Now
+              </a>
+            </div>
           </div>
         </div>
       </div>

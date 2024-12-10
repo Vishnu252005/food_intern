@@ -9,7 +9,7 @@ import { Categories } from './pages/Categories';
 import { Cart } from './pages/Cart';
 import { About } from './pages/About';
 import { Menu } from './pages/Menu';
-import { MessageCircle as WhatsApp, Home as HomeIcon, Grid as FourBox, ShoppingCart, User as UserIcon, Menu as MenuIcon, X as CloseIcon, Sun, Moon } from 'lucide-react';
+import { MessageCircle as WhatsApp, Home as HomeIcon, Grid as FourBox, ShoppingCart, User as UserIcon, Menu as MenuIcon, X as CloseIcon } from 'lucide-react';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 
@@ -18,7 +18,6 @@ const MobileNav: React.FC = () => {
   const totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,53 +33,46 @@ const MobileNav: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-  }, [isDarkMode]);
-
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex justify-between items-center py-2 md:hidden shadow-lg z-50 px-4">
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
+      <div className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 text-gray-700 flex justify-between items-center py-2 md:hidden shadow-lg z-50 px-4">
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-700 hover:text-gray-900">
           {isMenuOpen ? <CloseIcon size={24} /> : <MenuIcon size={24} />}
         </button>
-        <Link to="/" className="text-xl font-bold text-gray-900 dark:text-gray-100">Logo</Link>
+        <Link to="/" className="text-xl font-bold text-gray-900">Logo</Link>
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+            className="text-gray-700 hover:text-gray-900"
           >
             <UserIcon size={24} />
           </button>
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50">
-              <Link to="/signin" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg">
+              <Link to="/signin" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                 Sign In
               </Link>
-              <Link to="/signup" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+              <Link to="/signup" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                 Sign Up
               </Link>
             </div>
           )}
         </div>
-        <button onClick={() => setIsDarkMode(!isDarkMode)} className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 ml-4">
-          {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
-        </button>
       </div>
       {isMenuOpen && (
-        <div className="fixed top-12 left-0 right-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex flex-col py-2 md:hidden shadow-lg z-50">
-          <Link to="/" className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Home</Link>
-          <Link to="/categories" className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Categories</Link>
-          <Link to="/cart" className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Cart</Link>
-          <Link to="/about" className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">About</Link>
-          <Link to="/menu" className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Menu</Link>
+        <div className="fixed top-12 left-0 right-0 bg-white border-b border-gray-200 text-gray-700 flex flex-col py-2 md:hidden shadow-lg z-50">
+          <Link to="/" className="px-4 py-2 text-gray-700 hover:bg-gray-100">Home</Link>
+          <Link to="/categories" className="px-4 py-2 text-gray-700 hover:bg-gray-100">Categories</Link>
+          <Link to="/cart" className="px-4 py-2 text-gray-700 hover:bg-gray-100">Cart</Link>
+          <Link to="/about" className="px-4 py-2 text-gray-700 hover:bg-gray-100">About</Link>
+          <Link to="/menu" className="px-4 py-2 text-gray-700 hover:bg-gray-100">Menu</Link>
         </div>
       )}
-      <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex justify-around items-center py-2 md:hidden shadow-lg z-50">
-        <Link to="/" className="flex flex-col items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 text-gray-700 flex justify-around items-center py-2 md:hidden shadow-lg z-50">
+        <Link to="/" className="flex flex-col items-center text-gray-700 hover:text-gray-900">
           <HomeIcon size={24} />
         </Link>
-        <Link to="/categories" className="flex flex-col items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
+        <Link to="/categories" className="flex flex-col items-center text-gray-700 hover:text-gray-900">
           <FourBox size={24} />
         </Link>
         <Link to="/cart" className="flex items-center bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors">
@@ -92,7 +84,6 @@ const MobileNav: React.FC = () => {
             </span>
           )}
         </Link>
-        
       </div>
     </>
   );
@@ -102,7 +93,7 @@ function App() {
   return (
     <Router>
       <CartProvider>
-        <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-grow">
             <Routes>

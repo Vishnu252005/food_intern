@@ -2,6 +2,10 @@ import React, { createContext, useContext, useReducer } from 'react';
 import { CartItem, MenuItem } from '../types';
 import toast from 'react-hot-toast';
 
+interface CartProviderProps {
+  children: React.ReactNode;
+}
+
 interface CartState {
   items: CartItem[];
   total: number;
@@ -66,17 +70,20 @@ const cartReducer = (state: CartState, action: Action): CartState => {
   }
 };
 
-export const CartProvider: React.FC = ({ children }) => {
+export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, { items: [], total: 0 });
 
-  const addItem = (item: CartItem) => {
-    dispatch({ type: 'ADD_ITEM', payload: item });
-    toast.success(`Added ${item.menuItem.title} to cart`, { duration: 1000 }); // Set duration to 1 second
+  const addItem = (newItem: CartItem) => {
+    dispatch({
+      type: 'ADD_ITEM',
+      payload: newItem
+    });
+    toast.success(`Added ${newItem.menuItem.title} to cart`, { duration: 1000 });
   };
 
   const removeItem = (id: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id });
-    toast.success('Item removed from cart', { duration: 1000 }); // Set duration to 1 second
+    toast.success('Item removed from cart', { duration: 1000 });
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -85,7 +92,7 @@ export const CartProvider: React.FC = ({ children }) => {
 
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' });
-    toast.success('Cart cleared', { duration: 1000 }); // Set duration to 1 second
+    toast.success('Cart cleared', { duration: 1000 });
   };
 
   return (

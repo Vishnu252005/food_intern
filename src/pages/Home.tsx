@@ -101,7 +101,7 @@ export const Home = () => {
           </h2>
           <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
             {menuItems.filter(item => item.rating >= 4.5).map((item) => {
-              const cartItem = isInCart(item.id);
+              const cartItem = isInCart(item.title);
               return (
                 <div key={item.id} className="flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden w-64">
                   <img
@@ -117,11 +117,8 @@ export const Home = () => {
                     {!cartItem ? (
                       <button
                         onClick={() => addItem({
-                          id: item.id,
-                          title: item.title,
-                          quantity: 1,
-                          price: item.price,
                           menuItem: item,
+                          quantity: 1
                         })}
                         className="mt-4 inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700"
                       >
@@ -140,11 +137,8 @@ export const Home = () => {
                         </span>
                         <button
                           onClick={() => addItem({
-                            id: item.id,
-                            title: item.title,
-                            quantity: 1,
-                            price: item.price,
                             menuItem: item,
+                            quantity: 1
                           })}
                           className="px-2 py-1 bg-green-600 text-white rounded-r-md hover:bg-green-700"
                         >

@@ -40,7 +40,7 @@ const CategoryPage: React.FC = () => {
                     onClick={() =>
                       addItem({
                         menuItem: item,
-                        quantity: 1,
+                        quantity: 1
                       })
                     }
                     className="mt-4 inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700"
@@ -62,7 +62,7 @@ const CategoryPage: React.FC = () => {
                       onClick={() =>
                         addItem({
                           menuItem: item,
-                          quantity: 1,
+                          quantity: 1
                         })
                       }
                       className="px-2 py-1 bg-green-600 text-white rounded-r-md hover:bg-green-700"

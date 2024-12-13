@@ -1,98 +1,80 @@
 import React from 'react';
-
-const categories = [
-    {
-        id: '1',
-        name: 'Pizza',
-        category: 'Italian',
-        description: 'Delicious cheese pizza',
-        price: 9.99,
-        imageUrl: 'pizza.jpg',
-        weight: '500g',
-        origin: 'Italy',
-        cuisine: 'Italian',
-        dietary: 'Vegetarian',
-        ingredients: ['cheese', 'tomato', 'dough'],
-      },
-      {
-        id: '2',
-        name: 'Sushi',
-        category: 'Japanese',
-        description: 'Fresh sushi with salmon and avocado',
-        price: 12.99,
-        imageUrl: 'sushi.jpg',
-        weight: '300g',
-        origin: 'Japan',
-        cuisine: 'Japanese',
-        dietary: 'Pescatarian',
-        ingredients: ['salmon', 'avocado', 'rice'],
-      },
-      {
-        id: '3',
-        name: 'Tacos',
-        category: 'Mexican',
-        description: 'Spicy beef tacos with salsa',
-        price: 8.99,
-        imageUrl: 'tacos.jpg',
-        weight: '400g',
-        origin: 'Mexico',
-        cuisine: 'Mexican',
-        dietary: 'Non-Vegetarian',
-        ingredients: ['beef', 'tortilla', 'salsa'],
-      },
-      {
-        id: '4',
-        name: 'Pasta',
-        category: 'Italian',
-        description: 'Creamy Alfredo pasta',
-        price: 10.99,
-        imageUrl: 'pasta.jpg',
-        weight: '450g',
-        origin: 'Italy',
-        cuisine: 'Italian',
-        dietary: 'Vegetarian',
-        ingredients: ['pasta', 'cream', 'cheese'],
-      },
-      {
-        id: '5',
-        name: 'Burger',
-        category: 'American',
-        description: 'Juicy beef burger with cheese',
-        price: 11.99,
-        imageUrl: 'burger.jpg',
-        weight: '350g',
-        origin: 'USA',
-        cuisine: 'American',
-        dietary: 'Non-Vegetarian',
-        ingredients: ['beef', 'bun', 'cheese'],
-      },
-      {
-        id: '6',
-        name: 'Pad Thai',
-        category: 'Thai',
-        description: 'Stir-fried noodles with shrimp',
-        price: 13.99,
-        imageUrl: 'padthai.jpg',
-        weight: '500g',
-        origin: 'Thailand',
-        cuisine: 'Thai',
-        dietary: 'Pescatarian',
-        ingredients: ['shrimp', 'noodles', 'peanuts'],
-      }
-    ];
+import { useParams } from 'react-router-dom';
+import { menuItems } from '../data/menuItems'; // Import menuItems
+import { useCart } from '../context/CartContext'; // Ensure correct import path
 
 const CategoryPage: React.FC = () => {
+  const { categoryId } = useParams<{ categoryId: string }>();
+
+  const { addItem, removeItem, state } = useCart();
+
+  const isInCart = (id: string) => {
+    return state.items.find(item => item.menuItem.id === id);
+  };
+
+  const filteredItems = menuItems.filter(item => item.category === categoryId);
+
+  if (!filteredItems.length) {
+    return <div>Category not found</div>;
+  }
+
   return (
     <div>
-      <h1>Categories</h1>
-      <div>
-        {categories.map(category => (
-          <div key={category.id}>
-            <h2>{category.name}</h2>
-            <p>{category.description}</p>
-            <img src={category.imageUrl} alt={category.name} />
-          </div>
-        ))}
+      <h1 className="text-3xl font-bold mb-6">{categoryId}</h1>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredItems.map(item => {
+          const cartItem = isInCart(item.id);
+          return (
+            <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                className="w-full h-40 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
+                <p className="text-gray-900">₹{item.price.toFixed(2)}</p>
+                {!cartItem ? (
+                  <button
+                    onClick={() =>
+                      addItem({
+                        menuItem: item,
+                        quantity: 1,
+                      })
+                    }
+                    className="mt-4 inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700"
+                  >
+                    Add to Cart
+                  </button>
+                ) : (
+                  <div className="mt-4 flex items-center">
+                    <button
+                      onClick={() => removeItem(item.id)}
+                      className="px-2 py-1 bg-red-600 text-white rounded-l-md hover:bg-red-700"
+                    >
+                      -
+                    </button>
+                    <span className="px-4 py-1 border-t border-b border-gray-300">
+                      {cartItem.quantity}
+                    </span>
+                    <button
+                      onClick={() =>
+                        addItem({
+                          menuItem: item,
+                          quantity: 1,
+                        })
+                      }
+                      className="px-2 py-1 bg-green-600 text-white rounded-r-md hover:bg-green-700"
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

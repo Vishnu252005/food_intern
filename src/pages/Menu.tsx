@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { menuItems } from '../data/menuItems';
+import { menuItems } from '../data/menuItems'; // Updated path
 import { useCart } from '../context/CartContext';
 
 export const Menu = () => {
@@ -16,9 +16,12 @@ export const Menu = () => {
     return state.items.find(item => item.menuItem.id === id);
   };
 
-  // Filter menu items based on the selected category
+  // Update the category filtering to ensure exact match without replacing hyphens
   const filteredItems = selectedCategory
-    ? menuItems.filter(item => item.category.toLowerCase() === selectedCategory.toLowerCase())
+    ? menuItems.filter(
+        item =>
+          item.category.toLowerCase() === selectedCategory.toLowerCase()
+      )
     : menuItems;
 
   return (
@@ -32,7 +35,7 @@ export const Menu = () => {
           return (
             <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <img
-                src={item.image}
+                src={item.imageUrl} // Changed from 'image' to 'imageUrl'
                 alt={item.title}
                 className="w-full h-48 object-cover"
               />
@@ -42,7 +45,13 @@ export const Menu = () => {
                 <p className="text-gray-900 font-semibold mt-2">₹{item.price.toFixed(2)}</p>
                 {!cartItem ? (
                   <button
-                    onClick={() => addItem(item)}
+                    onClick={() => addItem({
+                      id: item.id,
+                      title: item.title,
+                      quantity: 1,
+                      price: item.price,
+                      menuItem: item, // Ensure the entire MenuItem is passed
+                    })}
                     className="mt-4 w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
                   >
                     Add to Cart
@@ -57,7 +66,13 @@ export const Menu = () => {
                     </button>
                     <span className="px-4 py-1 border-t border-b border-gray-300">{cartItem.quantity}</span>
                     <button
-                      onClick={() => addItem(item)}
+                      onClick={() => addItem({
+                        id: item.id,
+                        title: item.title,
+                        quantity: 1,
+                        price: item.price,
+                        menuItem: item,
+                      })}
                       className="px-2 py-1 bg-green-600 text-white rounded-r-md hover:bg-green-700"
                     >
                       +

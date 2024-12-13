@@ -12,6 +12,7 @@ import { Menu } from './pages/Menu';
 import { MessageCircle as WhatsApp, Home as HomeIcon, Grid as FourBox, ShoppingCart, User as UserIcon, Menu as MenuIcon, X as CloseIcon, Search } from 'lucide-react';
 import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
+import CategoryPage from './pages/CategoryPage';
 
 const MobileTopNav: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -173,10 +174,11 @@ function App() {
           <main className="flex-grow pt-24 md:pt-0">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/menu" element={<Menu />} />
               <Route path="/categories" element={<Categories />} />
+              <Route path="/category/:categoryId" element={<CategoryPage />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/about" element={<About />} />
-              <Route path="/menu" element={<Menu />} /> {/* Updated Route */}
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
               {/* <Route path="/offers" element={<Offers />} /> */}

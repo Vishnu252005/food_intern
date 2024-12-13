@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext'; // Ensure the correct path
+import { menuItems } from '../data/menuItems'; // Added import for menuItems
 
 export interface MenuItem {
   id: string;
@@ -56,44 +57,24 @@ export const Home = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
             Shop by Category
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                name: 'Italian',
-                image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=800&q=80',
+                name: 'Veg',
+                image: 'https://images.unsplash.com/photo-1543353071-087092ec393a?auto=format&fit=crop&w=800&q=80', // Updated URL
               },
               {
-                name: 'American',
-                image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80',
-              },
-              {
-                name: 'Japanese',
-                image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80', // Updated URL
-              },
-              {
-                name: 'Desserts',
-                image: 'https://images.unsplash.com/photo-1511690743698-d9d85f2fbf38?auto=format&fit=crop&w=800&q=80',
-              },
-              {
-                name: 'Mexican',
+                name: 'Non-Veg',
                 image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80',
               },
               {
-                name: 'Indian',
-                image: 'https://images.unsplash.com/photo-1598514982083-3f025af13b39?auto=format&fit=crop&w=800&q=80', // Updated URL
-              },
-              {
-                name: 'Chinese',
-                image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80', // Updated URL
-              },
-              {
-                name: 'Middle Eastern',
-                image: 'https://images.unsplash.com/photo-1609458446334-7956d4f3b3b4?auto=format&fit=crop&w=800&q=80', // Updated URL
+                name: 'Sweets',
+                image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80', // Updated URL
               },
             ].map((category) => (
               <Link
                 key={category.name}
-                to={`/menu?category=${category.name.toLowerCase().replace(' ', '-')}`}
+                to={`/menu?category=${category.name.toLowerCase()}`} // Ensure category.id is used consistently
                 className="group relative rounded-lg overflow-hidden"
               >
                 <div className="aspect-w-1 aspect-h-1">
@@ -119,60 +100,29 @@ export const Home = () => {
             Today's Special
           </h2>
           <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
-            {[
-              {
-                id: '1',
-                title: "Chef's Special",
-                description: 'Handcrafted dishes by our expert chefs',
-                image: 'https://images.unsplash.com/photo-1542010589005-d1eacc3918f2',
-                price: 19.99,
-              },
-              {
-                id: '2',
-                title: 'New Arrivals',
-                description: 'Fresh and exciting additions to our menu',
-                image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929',
-                price: 14.99,
-              },
-              {
-                id: '3',
-                title: 'Popular Items',
-                description: 'Most loved dishes by our customers',
-                image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601',
-                price: 12.99,
-              },
-              {
-                id: '4',
-                title: 'Grilled Salmon',
-                description: 'Perfectly grilled salmon with lemon butter sauce',
-                image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141',
-                price: 18.99,
-              },
-              {
-                id: '5',
-                title: 'Vegan Buddha Bowl',
-                description: 'A wholesome bowl with fresh vegetables and quinoa',
-                image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c',
-                price: 15.99,
-              },
-              // Add more items as needed
-            ].map((offer) => {
-              const cartItem = isInCart(offer.title);
+            {menuItems.filter(item => item.rating >= 4.5).map((item) => {
+              const cartItem = isInCart(item.id);
               return (
-                <div key={offer.id} className="flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden w-64">
+                <div key={item.id} className="flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden w-64">
                   <img
-                    src={offer.image}
-                    alt={offer.title}
+                    src={item.imageUrl}
+                    alt={item.title}
                     className="w-full h-40 object-cover"
                   />
                   <div className="p-4">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{offer.title}</h3>
-                    <p className="text-gray-600">{offer.description}</p>
-                    <p className="text-gray-900">₹{offer.price.toFixed(2)}</p> {/* Display price in INR */}
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
+                    <p className="text-gray-600">{item.description}</p>
+                    <p className="text-gray-900">₹{item.price.toFixed(2)}</p>
                     {/* Add to Cart Button */}
                     {!cartItem ? (
                       <button
-                        onClick={() => addItem({ id: offer.id, title: offer.title, quantity: 1, price: offer.price })}
+                        onClick={() => addItem({
+                          id: item.id,
+                          title: item.title,
+                          quantity: 1,
+                          price: item.price,
+                          menuItem: item,
+                        })}
                         className="mt-4 inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700"
                       >
                         Add to Cart
@@ -180,14 +130,22 @@ export const Home = () => {
                     ) : (
                       <div className="mt-4 flex items-center">
                         <button
-                          onClick={() => removeItem(offer.id)}
+                          onClick={() => removeItem(item.id)}
                           className="px-2 py-1 bg-red-600 text-white rounded-l-md hover:bg-red-700"
                         >
                           -
                         </button>
-                        <span className="px-4 py-1 border-t border-b border-gray-300">{cartItem.quantity}</span>
+                        <span className="px-4 py-1 border-t border-b border-gray-300">
+                          {cartItem.quantity}
+                        </span>
                         <button
-                          onClick={() => addItem({ id: offer.id, title: offer.title, quantity: 1, price: offer.price })}
+                          onClick={() => addItem({
+                            id: item.id,
+                            title: item.title,
+                            quantity: 1,
+                            price: item.price,
+                            menuItem: item,
+                          })}
                           className="px-2 py-1 bg-green-600 text-white rounded-r-md hover:bg-green-700"
                         >
                           +

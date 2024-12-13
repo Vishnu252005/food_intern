@@ -3,7 +3,7 @@ export interface MenuItem {
   title: string; // Changed from 'name' to 'title' for consistency
   description: string;
   price: number;
-  image: string;
+  imageUrl: string; // Changed from 'image' to 'imageUrl' for consistency
   category: string;
   cuisine: string;
   dietary: string[];
